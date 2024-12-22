@@ -1,4 +1,4 @@
-# CLOVER-model
+# CLOVER-A Cross-Cancer Learning Model using Variant Data for Biomarker Recognition
 
 Prostate cancer (PCa) is a prevalent malignancy with variable treatment responses. Identifying genetic biomarkers can enhance
 personalized treatment strategies. In this study, we introduce CLOVER (a Cross-cancer Learning model using sOmatic Variant data
