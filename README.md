@@ -15,3 +15,9 @@ cancer achieved better performance compared to randomly chosen biomarkers. To va
 perspective, we performed a mutational signature analysis using a non-negative matrix factorization (NMF) approach. The results of
 the mutational signature analysis align with the identified biomarkers, which strengthens the robustness of our cross-cancer biomarker
 discovery framework.
+
+
+
+
+
+![Figure 1](https://github.com/user-attachments/assets/c62c0fb5-4b0b-4c96-94ab-dd2b979a1789)
