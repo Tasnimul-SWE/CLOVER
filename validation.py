@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Data setup for each biomarker group and specified lower mean accuracy for random performance
 groups = ['All biomarkers', 'Prostate biomarkers', 'Breast biomarkers', 'Ovarian biomarkers', 'Colorectal biomarkers', 'Pancreatic biomarkers']
-random_means = [0.6, 0.33, 0.43, 0.51, 0.39, 0.52]
+means = [0.6, 0.33, 0.43, 0.51, 0.39, 0.52]
 
 # Generate accuracies for each biomarker group with a specific mean and standard deviation
 accuracies = {
@@ -18,7 +18,7 @@ accuracies = {
 # Generate random performance data with the same spread as each biomarker group but with lower mean accuracy
 random_performance_adjusted = [
     np.random.normal(loc=mean, scale=accuracies[group].std(), size=30)
-    for mean, group in zip(random_means, groups)
+    for mean, group in zip(means, groups)
 ]
 
 # Define unique colors for each biomarker group similar to previous image
