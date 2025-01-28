@@ -3,16 +3,6 @@
 
 This repository contains Python code and resources for analyzing cancer biomarkers and predicting outcomes using multi-label classification models, survival analysis, and mutational signature generation. These tools aim to explore the relationships between various biomarkers and their predictive power across different cancer types.
 
-## Table of Contents
-
-1. Overview
-2. Features
-3. Repository Structure
-4. Requirements
-5. Usage
-6. Results
-7. License
-
 ## Overview
 
 This project uses machine learning and statistical analysis techniques to study cancer biomarkers and generate insights into their roles in different cancers. Key components include multi-label classification, survival analysis, and mutational signature profiling.
