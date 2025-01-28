@@ -1,23 +1,98 @@
-# CLOVER-A Cross-Cancer Learning Model using Variant Data for Biomarker Recognition
 
-Prostate cancer (PCa) is a prevalent malignancy with variable treatment responses. Identifying genetic biomarkers can enhance
-personalized treatment strategies. In this study, we introduce CLOVER (a Cross-cancer Learning model using sOmatic Variant data
-for biomarkEr Recognition), a deep learning framework that integrates prostate, breast, ovarian, pancreatic and colorectal cancer
-data given their molecular similarities in their DNA repair pathway abnormalities to identify jointly important genetic biomarkers.
-We introduce a novel framework that utilizes an autoencoder for dimensionality reduction, with the latent space representation
-employed in a supervised deep learning architecture for classification. Our model achieved a balanced accuracy of 87%, significantly
-outperforming models using single cancer types. Next, we identified key genetic variants contributing to disease states. These
-findings highlight the potential of cross-cancer learning in biomarker discovery and personalized medicine by allowing data enrichment
-and multi-cancer treatment strategies. To further investigate the biological significance of our proposed biomarkers, we conducted
-pathway enrichment analysis to identify the key signaling pathways most impacted by these biomarkers. Additionally, we validated
-our results by constructing a separate deep neural network (DNN), which demonstrated that the proposed biomarkers for prostate
-cancer achieved better performance compared to randomly chosen biomarkers. To validate our findings from a mutational pattern
-perspective, we performed a mutational signature analysis using a non-negative matrix factorization (NMF) approach. The results of
-the mutational signature analysis align with the identified biomarkers, which strengthens the robustness of our cross-cancer biomarker
-discovery framework.
+# Multi-Label Cancer Biomarker Analysis and Prediction Models
+
+This repository contains Python code and resources for analyzing cancer biomarkers and predicting outcomes using multi-label classification models, survival analysis, and mutational signature generation. These tools aim to explore the relationships between various biomarkers and their predictive power across different cancer types.
+
+## Table of Contents
+
+1. Overview
+2. Features
+3. Repository Structure
+4. Requirements
+5. Usage
+6. Results
+7. License
+
+## Overview
+
+This project uses machine learning and statistical analysis techniques to study cancer biomarkers and generate insights into their roles in different cancers. Key components include multi-label classification, survival analysis, and mutational signature profiling.
+
+## Features
+
+- **Multi-label classification models:** Train deep learning models for identifying cancer biomarkers.
+- **Visualization:** Generate and compare biomarker prediction accuracies using box plots.
+- **Survival Analysis:** Perform mixture model analysis for survival prediction.
+- **Mutational Signature Analysis:** Generate and evaluate mutational signatures using SigProfilerExtractor.
+
+## Repository Structure
+
+```
+├── mlc_model.py
+│   - Multi-label classification model for cancer biomarker prediction.
+│
+├── validation.py
+│   - Validation scripts for analyzing prediction accuracy of biomarker groups.
+│
+├── survival_code.py
+│   - Code for survival analysis using Gaussian Mixture Models.
+│
+├── Mutational_signature_generation.py
+│   - Code for generating mutational signatures using SigProfilerExtractor.
+│
+└── README.md
+    - Project documentation.
+```
+
+## Requirements
+
+To set up the environment, ensure you have the following:
+
+- Python 3.8 or later
+- Required Python libraries:
+  - TensorFlow==2.11.0
+  - pandas==1.3.3
+  - numpy==1.21.2
+  - matplotlib==3.4.3
+  - scipy==1.7.1
+  - SigProfilerExtractor==1.1.3
+
+Install the dependencies using pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+1. **Multi-label Classification**  
+   Run `mlc_model.py` to train and evaluate the multi-label classification model.
+   ```bash
+   python mlc_model.py
+   ```
+
+2. **Validation**  
+   Use `validation.py` to generate validation plots for prediction accuracies.
+   ```bash
+   python validation.py
+   ```
+
+3. **Survival Analysis**  
+   Run `survival_code.py` for Gaussian Mixture Model-based survival analysis.
+   ```bash
+   python survival_code.py
+   ```
+
+4. **Mutational Signature Generation**  
+   Use `Mutational_signature_generation.py` to generate mutational signatures.
+   ```bash
+   python Mutational_signature_generation.py
+   ```
+
+## Results
+
+- Multi-label classification results include classification reports and accuracy metrics for cancer biomarkers.
+- Visualization includes box plots comparing prediction accuracies across biomarker groups.
+- Survival analysis outputs Gaussian Mixture Models for survival prediction.
+- Mutational signature profiling provides extracted signatures and their interpretations.
 
 
-
-
-
-![Figure 1](https://github.com/user-attachments/assets/c62c0fb5-4b0b-4c96-94ab-dd2b979a1789)
