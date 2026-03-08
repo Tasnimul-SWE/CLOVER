@@ -1,11 +1,10 @@
 
 # Multi-Label Cancer Biomarker Analysis and Prediction Models
 
-This repository contains Python code and resources for analyzing cancer biomarkers and predicting outcomes using multi-label classification models, survival analysis, and mutational signature generation. These tools aim to explore the relationships between various biomarkers and their predictive power across different cancer types.
-
+This repository contains Python code and resources for analyzing cancer biomarkers and predicting outcomes using multi-label classification models, survival analysis, mutational signature generation, and baseline model validation. The project focuses on identifying important genomic variants (biomarkers) and evaluating their predictive power across multiple cancer types.
 ## Overview
 
-This project uses machine learning and statistical analysis techniques to study cancer biomarkers and generate insights into their roles in different cancers. Key components include multi-label classification, survival analysis, and mutational signature profiling.
+This project uses machine learning and statistical analysis techniques to study cancer biomarkers and generate insights into their roles in different cancers. Key components include multi-label classification, survival analysis, baseline model validation and mutational signature profiling.
 
 ## Features
 
@@ -13,6 +12,7 @@ This project uses machine learning and statistical analysis techniques to study 
 - **Visualization:** Generate and compare biomarker prediction accuracies using box plots.
 - **Survival Analysis:** Perform mixture model analysis for survival prediction.
 - **Mutational Signature Analysis:** Generate and evaluate mutational signatures using SigProfilerExtractor.
+- **Baseline model validation:** Compares CLOVER selected varaints against state-of-the-art feature selection approaches. 
 
 ## Repository Structure
 
@@ -25,6 +25,20 @@ This project uses machine learning and statistical analysis techniques to study 
 │
 ├── Mutational_signature_generation.py
 │   - Code for generating mutational signatures using SigProfilerExtractor.
+├── DeepFS.py
+│   Deep feature selection using supervised autoencoder
+│
+├── DFS.py
+│   Deep Feature Selection implementation using L1 regularization
+│
+├── HSIC-Lasso.py
+│   HSIC-Lasso based feature selection
+│
+├── LassoNet.py
+│   LassoNet implementation for sparse feature selection
+│
+├── Random_forest.py
+│   Feature selection using Random Forest importance
 │
 └── README.md
     - Project documentation.
