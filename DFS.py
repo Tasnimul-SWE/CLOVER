@@ -1,15 +1,15 @@
-#DFS mpelemtation
+# DFS 
+
 import numpy as np
 import pandas as pd
 import random
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm.auto import tqdm
-
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, precision_score, recall_score, f1_score
+
 
 
 def set_seed(seed):
@@ -20,12 +20,15 @@ def set_seed(seed):
         torch.cuda.manual_seed_all(seed)
 
 
+# DFS model
 class DFSNetwork(nn.Module):
     def __init__(self, input_dim, hidden1=256, hidden2=128, num_classes=10):
         super().__init__()
 
+        # feature weights for selection
         self.feature_weights = nn.Parameter(torch.ones(input_dim))
 
+        # classifier layers
         self.mlp = nn.Sequential(
             nn.Linear(input_dim, hidden1),
             nn.ReLU(),
@@ -37,10 +40,12 @@ class DFSNetwork(nn.Module):
         )
 
     def forward(self, x):
+        # apply feature weights
         x = x * self.feature_weights
         return self.mlp(x)
 
 
+# train DFS model
 def train_dfs(
     X_train,
     y_train,
@@ -58,6 +63,7 @@ def train_dfs(
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
+    # convert to tensors
     X = torch.tensor(X_train.astype(np.float32))
     y = torch.tensor(y_train, dtype=torch.long)
 
@@ -69,7 +75,9 @@ def train_dfs(
     criterion = nn.CrossEntropyLoss()
 
     for _ in tqdm(range(num_epochs), desc="DFS training", leave=True):
+
         model.train()
+
         for xb, yb in loader:
 
             xb = xb.to(device)
@@ -81,6 +89,7 @@ def train_dfs(
 
             ce_loss = criterion(out, yb)
 
+            # L1 regularization for sparsity
             l1 = torch.sum(torch.abs(model.feature_weights))
 
             loss = ce_loss + l1_lambda * l1
@@ -88,11 +97,13 @@ def train_dfs(
             loss.backward()
             optimizer.step()
 
+    # extract learned weights
     weights = model.feature_weights.detach().cpu().numpy()
 
     return model, weights
 
 
+# classifier model
 class EmbeddingClassifier(nn.Module):
     def __init__(self, vocab_size, embedding_dim, num_classes):
         super().__init__()
@@ -125,6 +136,7 @@ class EmbeddingClassifier(nn.Module):
         return self.fc3(x)
 
 
+# train classifier once
 def train_and_eval_classifier(
     X_train,
     y_train,
@@ -145,6 +157,7 @@ def train_and_eval_classifier(
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
+    # convert data
     X_train = torch.tensor(X_train, dtype=torch.long)
     y_train = torch.tensor(y_train, dtype=torch.long)
 
@@ -159,6 +172,7 @@ def train_and_eval_classifier(
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = nn.CrossEntropyLoss()
 
+    # training loop
     for _ in tqdm(range(num_epochs), desc=f"Classifier seed={seed}", leave=False):
 
         model.train()
@@ -183,6 +197,7 @@ def train_and_eval_classifier(
     preds = []
     true = []
 
+    # evaluation
     with torch.no_grad():
 
         for xb, yb in val_loader:
@@ -211,6 +226,7 @@ def train_and_eval_classifier(
     }
 
 
+# repeat training multiple times
 def repeated_runs(
     X_train,
     y_train,
@@ -241,6 +257,7 @@ def repeated_runs(
 
     df = pd.DataFrame(records)
 
+    # compute summary
     summary = pd.DataFrame({
 
         "Metric":["Accuracy","Balanced Acc","Precision","Recall","F1"],
@@ -265,25 +282,34 @@ def repeated_runs(
     return df, summary
 
 
+# variant names
 variant_names = matrix.columns.tolist()
 
+
+# train DFS model
 dfs_model, weights = train_dfs(
     X_train,
     y_train,
     input_dim=X_train.shape[1]
 )
 
+# feature importance
 importance = np.abs(weights)
 
+# select top 100 variants
 top100_idx = np.argsort(-importance)[:100]
 
 selected_variants = [variant_names[i] for i in top100_idx]
 
 print("Top 10 variants:", selected_variants[:10])
 
+
+# reduce dataset
 X_train_sel = X_train[:, top100_idx]
 X_val_sel = X_val[:, top100_idx]
 
+
+# run experiments
 runs, summary = repeated_runs(
     X_train_sel,
     y_train,
@@ -294,6 +320,8 @@ runs, summary = repeated_runs(
 
 print(summary)
 
+
+# save results
 runs.to_csv("dfs_runs.csv",index=False)
 summary.to_csv("dfs_summary.csv",index=False)
 
