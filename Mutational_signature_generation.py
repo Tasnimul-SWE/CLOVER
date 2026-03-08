@@ -34,4 +34,4 @@ pip install SigProfilerExtractor
 
 from SigProfilerExtractor import sigpro as sig
 
-sig.sigProfilerExtractor("matrix", "results", "/content/output_transposed.txt", reference_genome="GRCh37", minimum_signatures=1, maximum_signatures=10, nmf_replicates=100, cpu=-1)
+sig.sigProfilerExtractor("matrix", "results", "/content/output_transposed.txt", reference_genome="GRCh37", minimum_signatures=1, maximum_signatures=17, nmf_replicates=100, cpu=-1)
