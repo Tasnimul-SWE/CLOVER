@@ -9,6 +9,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
+# load dataset
 df = pd.read_csv('data_all_cancer.csv')
 
 df = df.transpose().reset_index()
@@ -20,6 +21,7 @@ y = df['class_id'].astype(int).values
 
 X = X_df.astype(np.int32).values
 
+# dataset stats
 n_samples = X.shape[0]
 n_features = X.shape[1]
 n_classes = len(np.unique(y))
@@ -31,8 +33,10 @@ print("Number of features:", n_features)
 print("Number of classes:", n_classes)
 print("Number of reconstruction categories:", n_categories)
 
+# one-hot labels
 y_cat = to_categorical(y, num_classes=n_classes)
 
+# train test split
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y_cat,
@@ -50,6 +54,7 @@ inp = Input(shape=(n_features,), name='input_layer')
 
 x = BatchNormalization(name='input_bn')(inp)
 
+# encoder
 x = Dense(1024, activation='relu', name='enc_dense_1024')(x)
 x = BatchNormalization(name='enc_bn_1024')(x)
 x = Dropout(0.3, name='enc_drop_1024')(x)
@@ -58,10 +63,13 @@ x = Dense(512, activation='relu', name='enc_dense_512')(x)
 x = BatchNormalization(name='enc_bn_512')(x)
 x = Dropout(0.3, name='enc_drop_512')(x)
 
+# latent representation
 latent = Dense(latent_dim, activation='relu', name='latent_vector')(x)
 
+# classification head
 class_output = Dense(n_classes, activation='softmax', name='class_output')(latent)
 
+# decoder
 d = Dense(512, activation='relu', name='dec_dense_512')(latent)
 d = BatchNormalization(name='dec_bn_512')(d)
 d = Dropout(0.3, name='dec_drop_512')(d)
@@ -74,9 +82,11 @@ d = Dense(4096, activation='relu', name='dec_dense_4096')(d)
 d = BatchNormalization(name='dec_bn_4096')(d)
 d = Dropout(0.3, name='dec_drop_4096')(d)
 
+# reconstruction layer
 d = Dense(n_features * n_categories, name='decoder_logits')(d)
 recon_output = Reshape((n_features, n_categories), name='recon_output')(d)
 
+# build model
 model = Model(inputs=inp, outputs=[class_output, recon_output])
 
 model.compile(
@@ -94,6 +104,7 @@ model.compile(
     }
 )
 
+# train
 history = model.fit(
     X_train,
     {
@@ -101,7 +112,7 @@ history = model.fit(
         'recon_output': X_train
     },
     validation_split=0.2,
-    epochs=100,
+    epochs=500,
     batch_size=16,
     verbose=1
 )
@@ -126,6 +137,8 @@ print(classification_report(y_true, y_pred))
 print(confusion_matrix(y_true, y_pred))
 
 encoder = Model(inputs=inp, outputs=latent)
+
+# generate latent embeddings
 encoded_X = encoder.predict(X)
 
 print("Encoded X shape:", encoded_X.shape)
